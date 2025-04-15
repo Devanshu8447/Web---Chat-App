@@ -1,0 +1,231 @@
+/* static/style.css - Enhanced Version */
+
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #007bff; /* Blue */
+    --secondary-color: #6c757d; /* Gray */
+    --light-bg: #f8f9fa;
+    --medium-bg: #e9ecef;
+    --dark-text: #343a40;
+    --light-text: #f8f9fa;
+    --border-color: #dee2e6;
+    --notification-color: #6c757d;
+    --message-bg: #ffffff;
+    --my-message-bg: #d1ecf1; /* Light blue for potential self-message styling */
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --border-radius: 0.3rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    display: flex;
+    height: 100vh; /* Full viewport height */
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+    overflow: hidden; /* Prevent body scrolling */
+}
+
+/* --- Layout --- */
+#sidebar {
+    width: 220px; /* Slightly wider sidebar */
+    background-color: var(--medium-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+}
+
+#chat-area {
+    flex-grow: 1; /* Take remaining space */
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* Remove padding, handled by inner elements */
+    background-color: var(--message-bg); /* White background for chat */
+    height: 100vh; /* Ensure it fills height */
+}
+
+/* --- Sidebar Content --- */
+#sidebar h3 {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+#user-list {
+    list-style: none;
+    overflow-y: auto; /* Scroll if user list gets long */
+    flex-grow: 1; /* Allow list to take available space */
+}
+
+#user-list li {
+    padding: 0.5rem 0.25rem;
+    border-bottom: 1px dashed var(--border-color);
+    font-size: 0.95rem;
+    word-break: break-all; /* Handle long usernames */
+}
+
+#user-list li:last-child {
+    border-bottom: none;
+}
+
+/* --- Chat Messages Area --- */
+#messages {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto; /* Enable scrolling for messages */
+    background-color: #fff; /* White background */
+    border-bottom: 1px solid var(--border-color);
+}
+
+#messages p {
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--border-radius);
+    line-height: 1.4;
+    max-width: 75%; /* Prevent messages spanning full width */
+    word-wrap: break-word; /* Wrap long words */
+    background-color: var(--medium-bg); /* Default bubble color */
+    clear: both; /* Ensure paragraphs don't overlap floated elements (if any) */
+}
+
+/* Style for notification messages */
+#messages p.notification {
+    background-color: transparent;
+    color: var(--notification-color);
+    text-align: center;
+    font-style: italic;
+    font-size: 0.9rem;
+    margin: 1rem auto;
+    max-width: 90%;
+    padding: 0.25rem;
+}
+
+/* Add a little extra style for the nickname part */
+#messages p strong {
+    color: var(--primary-color);
+    margin-right: 5px; /* Space between nickname and message */
+    display: block; /* Put nickname on its own line within bubble */
+    margin-bottom: 3px;
+    font-size: 0.8em;
+}
+
+/* --- Message Input Area --- */
+#input-area {
+    display: flex;
+    padding: 0.75rem 1rem; /* Padding around input area */
+    background-color: var(--medium-bg);
+    border-top: 1px solid var(--border-color); /* Optional: subtle separator */
+}
+
+#message-input {
+    flex-grow: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    font-size: 1rem;
+    margin-right: -1px; /* Overlap borders with button */
+    outline: none; /* Remove default outline */
+    transition: border-color 0.2s ease-in-out;
+}
+
+#message-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* Subtle focus glow */
+    z-index: 2; /* Ensure focus shadow is on top */
+}
+
+#send-button {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    white-space: nowrap; /* Prevent button text wrapping */
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+#send-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border-color: #0056b3;
+}
+
+#send-button:disabled,
+#message-input:disabled {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+/* --- Nickname Prompt Modal --- */
+#nickname-prompt {
+    display: none; /* Hidden by default */
+    position: fixed; /* Overlay */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px; /* Limit max width */
+    background: white;
+    padding: 2rem 2.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    border-radius: var(--border-radius);
+    z-index: 1050; /* Ensure it's on top */
+    text-align: center;
+}
+
+#nickname-prompt label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+#nickname-prompt input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    margin-bottom: 1rem; /* Space between input and button */
+    transition: border-color 0.2s ease-in-out;
+}
+
+#nickname-prompt input[type="text"]:focus {
+     border-color: var(--primary-color);
+     outline: none;
+     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+
+#nickname-prompt button {
+    padding: 0.75rem 1.5rem;
+    background-color: #28a745; /* Green for join */
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease-in-out;
+    width: 100%; /* Make button full width */
+}
+
+#nickname-prompt button:hover {
+     background-color: #218838; /* Darker green */
+}
